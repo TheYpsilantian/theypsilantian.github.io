@@ -310,6 +310,18 @@ img { max-width: 100%; display: block; }
   max-width: 62ch;
   margin-bottom: 1.2rem;
 }
+.network-nodes a.node {
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 2px solid rgba(255,255,255,0.4);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.network-nodes a.node:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+  text-decoration: none;
+  border-bottom-color: rgba(255,255,255,0.9);
+}
 .network-nodes {
   display: flex;
   flex-wrap: wrap;
@@ -684,25 +696,25 @@ footer {
     <h2 class="network-hed">The Same Names Keep Appearing.<br>That's Not a Coincidence. That's a System.</h2>
     <p class="network-body">Ypsilanti's accountability failures don't happen in isolation. They happen within a documented network of overlapping institutional affiliations — elected officials, nonprofit leaders, political operatives, and appointed commissioners whose relationships The Ypsilantian has traced through public records, campaign finance filings, council minutes, and IRS documents. The network map (interactive version coming) documents every confirmed connection.</p>
     <div class="network-nodes">
-      <span class="node node-council">Nicole Brown · Mayor</span>
+      <a href="/nicole-brown.html" class="node node-council">Nicole Brown · Mayor</a>
       <span class="node node-council">Desiraé Simmons · Ward 3</span>
-      <span class="node node-council">Amber Fellows · Ward 3</span>
+      <a href="/amber-fellows.html" class="node node-council">Amber Fellows · Ward 3</a>
       <span class="node node-council">Me'Chelle King · Ward 1</span>
       <span class="node node-council">Patrick McLean · Ward 2</span>
       <span class="node node-county">Annie Somerville · Commissioner</span>
-      <span class="node node-county">Justin Hodge · Commissioner</span>
-      <span class="node node-county">Eli Savit · Prosecutor</span>
+      <a href="/justin-hodge.html" class="node node-county">Justin Hodge · Commissioner</a>
+      <a href="/eli-savit.html" class="node node-county">Eli Savit · Prosecutor</a>
       <span class="node node-county">Yousef Rabhi · Commissioner / Mayoral Candidate</span>
       <span class="node node-nonprofit">LEAF Harm Reduction · Corn Williams</span>
-      <span class="node node-nonprofit">Supreme Felons Inc. · $1.2M ARPA</span>
+      <a href="/supreme-felons.html" class="node node-nonprofit">Supreme Felons Inc. · $1.2M ARPA</a>
       <span class="node node-nonprofit">Youth Arts Alliance · 326 E. Michigan</span>
       <span class="node node-nonprofit">Care-Based Safety · Sunsetted Mar 2026</span>
       <span class="node node-nonprofit">Nonprofit Enterprise at Work · Yodit Johnson</span>
       <span class="node node-operator">Brian Geiringer · A2P2 / Fellows Campaign</span>
-      <span class="node node-operator">Bryan Foley · YDDA / CVI Committee</span>
+      <a href="/bryan-foley.html" class="node node-operator">Bryan Foley · YDDA / CVI Committee</a>
       <span class="node node-operator">Amanda Edmonds · Growing Hope / Brown endorser</span>
       <span class="node node-event">Water Street · 27 yrs / $33M / encampment</span>
-      <span class="node node-event">McMullan · 4 felonies → $125</span>
+      <a href="/frances-mcmullan.html" class="node node-event">McMullan · 4 felonies → $125</a>
       <span class="node node-event">Ordinance 1465 · Harm Reduction Zoning</span>
     </div>
   </div>
