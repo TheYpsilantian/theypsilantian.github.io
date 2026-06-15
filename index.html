@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ypsilantian — Independent Watchdog Journalism</title>
+<style>
+/* ── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --ink:        #111010;
+  --paper:      #F2EDE4;
+  --rule:       #2B2B2B;
+  --accent:     #C0392B;
+  --accent2:    #1C3D5A;
+  --muted:      #6B6055;
+  --pale:       #E8E0D3;
+  --highlight:  #E8C84A;
+  --col-gap:    2.4rem;
+  --serif:      'Georgia', 'Times New Roman', serif;
+  --sans:       'Helvetica Neue', 'Arial', sans-serif;
+  --mono:       'Courier New', monospace;
+}
+
+/* ── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; display: block; }
+
+/* ── MASTHEAD ───────────────────────────────────────────── */
+.masthead {
+  border-bottom: 4px double var(--ink);
+  padding: 0;
+}
+.masthead-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.dateline {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.edition-badge {
+  background: var(--accent);
+  color: white;
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+}
+.masthead-name {
+  text-align: center;
+  padding: 1.4rem 2rem 0.6rem;
+  border-bottom: 3px solid var(--ink);
+}
+.pub-title {
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 9vw, 7.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  font-style: italic;
+}
+.pub-title span {
+  color: var(--accent);
+}
+.pub-sub {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.3rem 0;
+}
+.masthead-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  border-top: 1px solid var(--ink);
+  overflow-x: auto;
+}
+.masthead-nav a {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
+  border-right: 1px solid var(--ink);
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+.masthead-nav a:first-child { border-left: 1px solid var(--ink); }
+.masthead-nav a:hover {
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+/* ── ALERT BANNER ───────────────────────────────────────── */
+.alert-banner {
+  background: var(--accent);
+  color: white;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.alert-banner a { color: white; text-decoration: underline; }
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.page-wrap { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* ── HERO ───────────────────────────────────────────────── */
+.hero {
+  border-bottom: 2px solid var(--ink);
+  padding: 2rem 0 1.5rem;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--col-gap);
+  align-items: start;
+}
+.hero-lead { border-right: 1px solid var(--rule); padding-right: var(--col-gap); }
+.kicker {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.hero-hed {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 0.7rem;
+  letter-spacing: -0.02em;
+}
+.hero-dek {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #333;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.byline-line {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+  padding-top: 0.5rem;
+}
+.hero-secondary { display: flex; flex-direction: column; gap: 1.2rem; }
+.secondary-item {
+  border-bottom: 1px solid var(--pale);
+  padding-bottom: 1.2rem;
+}
+.secondary-item:last-child { border-bottom: none; padding-bottom: 0; }
+.sec-hed {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 0.3rem;
+}
+.sec-dek {
+  font-size: 0.88rem;
+  color: #444;
+  line-height: 1.45;
+}
+
+/* ── RULE ───────────────────────────────────────────────── */
+.rule-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1rem;
+}
+.rule-label::before, .rule-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+}
+.rule-label span {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ── ACCOUNTABILITY GRID ────────────────────────────────── */
+.acct-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 2px solid var(--ink);
+  border-left: 2px solid var(--ink);
+  margin-bottom: 2rem;
+}
+.acct-card {
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding: 1.1rem;
+  position: relative;
+  transition: background 0.12s;
+}
+.acct-card:hover { background: var(--pale); }
+.card-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.card-hed {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+.card-stat {
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.card-body {
+  font-size: 0.82rem;
+  color: #444;
+  line-height: 1.45;
+}
+.card-status {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+}
+.status-active { background: var(--accent); color: white; }
+.status-pending { background: var(--highlight); color: var(--ink); }
+.status-filed { background: var(--accent2); color: white; }
+.status-published { background: #2a6e3a; color: white; }
+
+/* ── NETWORK SECTION ────────────────────────────────────── */
+.network-section {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.network-title {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--highlight);
+  margin-bottom: 0.75rem;
+}
+.network-hed {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+.network-body {
+  font-size: 0.9rem;
+  color: #c8bfb0;
+  line-height: 1.6;
+  max-width: 62ch;
+  margin-bottom: 1.2rem;
+}
+.network-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.node {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid;
+  cursor: default;
+}
+.node-council { border-color: var(--accent); color: var(--accent); }
+.node-county { border-color: #5b9bd5; color: #5b9bd5; }
+.node-nonprofit { border-color: #a68bc4; color: #a68bc4; }
+.node-operator { border-color: var(--highlight); color: var(--highlight); }
+.node-event { border-color: #e87c5b; color: #e87c5b; }
+
+/* ── TUESDAY SECTION ────────────────────────────────────── */
+.tuesday {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--col-gap);
+  border-top: 2px solid var(--ink);
+  padding-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+.tuesday-main {}
+.tuesday-sidebar { border-left: 1px solid var(--rule); padding-left: var(--col-gap); }
+.sidebar-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+.sidebar-item {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.sidebar-item:last-child { border-bottom: none; }
+.sidebar-item strong {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  color: var(--muted);
+}
+
+/* ── ABOUT SECTION ──────────────────────────────────────── */
+.about-section {
+  background: var(--accent2);
+  color: white;
+  padding: 2.5rem 2rem;
+  margin-bottom: 2rem;
+}
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--col-gap);
+  align-items: start;
+}
+.about-hed {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+}
+.about-body {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #b8cfe0;
+}
+.about-body p + p { margin-top: 0.75rem; }
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.about-stat-item {
+  border-top: 2px solid rgba(255,255,255,0.2);
+  padding-top: 0.75rem;
+}
+.about-stat-num {
+  font-family: var(--mono);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--highlight);
+  line-height: 1;
+}
+.about-stat-label {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-top: 0.25rem;
+}
+
+/* ── FOIA TRACKER ───────────────────────────────────────── */
+.foia-section { margin-bottom: 2rem; }
+.foia-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+.foia-item {
+  border: 1px solid var(--rule);
+  padding: 0.75rem;
+  font-size: 0.8rem;
+}
+.foia-num {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+.foia-subject { font-weight: 700; line-height: 1.3; margin-bottom: 0.3rem; }
+.foia-target {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--col-gap);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.footer-brand { }
+.footer-pub-name {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-style: italic;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.footer-body {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.55;
+  max-width: 40ch;
+}
+.footer-col-label {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--highlight);
+  margin-bottom: 0.75rem;
+}
+.footer-links { list-style: none; }
+.footer-links li + li { margin-top: 0.4rem; }
+.footer-links a {
+  font-size: 0.82rem;
+  color: #aaa;
+}
+.footer-links a:hover { color: white; }
+.footer-bottom {
+  border-top: 1px solid #333;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: #666;
+  text-align: center;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero-inner, .tuesday, .about-inner, .footer-inner {
+    grid-template-columns: 1fr;
+  }
+  .hero-lead { border-right: none; padding-right: 0; border-bottom: 1px solid var(--rule); padding-bottom: 1.5rem; }
+  .tuesday-sidebar { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 1.5rem; }
+  .acct-grid { grid-template-columns: 1fr 1fr; }
+  .foia-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .pub-title { font-size: 2.8rem; }
+  .acct-grid { grid-template-columns: 1fr; }
+  .foia-grid { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+  .masthead-top { flex-direction: column; gap: 0.4rem; text-align: center; }
+}
+
+/* ── SCROLL REVEAL ──────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="dateline">Ypsilanti &amp; Washtenaw County, Michigan</span>
+    <span class="edition-badge">Preview Edition · June 2026</span>
+    <span class="dateline">Founded 2026 · Independent · No Advertisers</span>
+  </div>
+  <div class="masthead-name">
+    <div class="pub-title">The <span>Ypsilantian</span></div>
+    <div class="pub-sub">Independent Watchdog Journalism · Ypsilanti &amp; Washtenaw County · Named for M.T. Woodruff's original Ypsilantian, est. 1879</div>
+  </div>
+  <nav class="masthead-nav">
+    <a href="#accountability">Accountability</a>
+    <a href="#network">Network Map</a>
+    <a href="#tuesday">Tuesday Council</a>
+    <a href="#election2026">2026 Election</a>
+    <a href="#foia">FOIA Tracker</a>
+    <a href="#about">About</a>
+    <a href="#tips">Submit a Tip</a>
+  </nav>
+</header>
+
+<!-- ALERT -->
+<div class="alert-banner">
+  ⚑ City Council meets Tuesday June 16 at 7PM · City Hall, 1 S. Huron St · 6:30PM closed session · Harm Reduction Zoning final vote · <a href="#tuesday">Preview →</a>
+</div>
+
+<!-- MAIN -->
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="page-wrap">
+    <div class="hero-inner">
+
+      <div class="hero-lead reveal">
+        <div class="kicker">Breaking · Water Street · City Hall</div>
+        <h1 class="hero-hed">The City's Last Major Parcel Has an Encampment, a $33M Debt, and a Groundbreaking — All at Once</h1>
+        <p class="hero-dek">On the same day Ypsilanti celebrated the Youth Arts Alliance groundbreaking at 326 E. Michigan, the land the city transferred free, declared blighted to unlock county grants, and paid a city-contracted firm to brand — a February 2025 vacate notice remains unenforceable a block and a half west on Water Street, where an active encampment has produced reports of sexual assault and children in the woods.</p>
+        <div class="byline-line">The Ypsilantian Staff · June 13, 2026</div>
+      </div>
+
+      <div class="hero-secondary reveal">
+        <div class="secondary-item">
+          <div class="kicker">McMullan · Accountability</div>
+          <h2 class="sec-hed">Four Felonies. One Hundred Twenty-Five Dollars. Thirty Days.</h2>
+          <p class="sec-dek">Former City Manager Frances McMullan pleaded to a misdemeanor over documented credit card theft spanning 2019–2023. Savit's office accepted. Her email: "Nothing. It goes away."</p>
+        </div>
+        <div class="secondary-item">
+          <div class="kicker">Tuesday Council · Encampment</div>
+          <h2 class="sec-hed">The Vote That's Been Tabled Since October</h2>
+          <p class="sec-dek">Resolution 240 failed 3-3 in October 2024. Council Member King is now calling for removal. The math hasn't changed. Tuesday night, it might.</p>
+        </div>
+        <div class="secondary-item">
+          <div class="kicker">2026 Election · August 4 Primary</div>
+          <h2 class="sec-hed">The Woman Who Demanded Accountability for the China Trip Is Running Against the Mayor Who Was On It</h2>
+          <p class="sec-dek">October 17, 2017: Amber Fellows stood at the public comment microphone and asked why staff hadn't been fired. Nicole Brown was on the plane. They now vote together on the same council. Fellows filed for mayor April 20.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTABILITY GRID -->
+<section id="accountability" style="padding: 2rem 0;">
+  <div class="page-wrap">
+    <div class="rule-label"><span>Active Accountability Threads</span></div>
+    <div class="acct-grid">
+
+      <div class="acct-card reveal">
+        <div class="card-label">Contradiction Report · CT-2025-003</div>
+        <div class="card-hed">McMullan Embezzlement</div>
+        <div class="card-stat">$125</div>
+        <div class="card-body">Four felony counts. One misdemeanor plea. $125 fine. Gone in 30 days. Savit's office. The Finance Department missed it for four years.</div>
+        <span class="card-status status-published">Ready to Publish</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Contradiction Report · CT-2025-004</div>
+        <div class="card-hed">Supreme Felons Inc.</div>
+        <div class="card-stat">$1.2M</div>
+        <div class="card-body">County ARPA grant. Co-founder: convicted sex offender. CEO: parolee, $82K salary. IRS revoked nonprofit status. Crime up 56% in target zip codes.</div>
+        <span class="card-status status-published">Ready to Publish</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Field Coverage · FC-2025-001</div>
+        <div class="card-hed">Jenuwine Wrongful Death</div>
+        <div class="card-stat">27</div>
+        <div class="card-body">Sheriff Dyer's first week. 30-hour standoff. Navy veteran. 27 shots fired. Wrongful death lawsuit filed June 10, 2026.</div>
+        <span class="card-status status-published">Ready to Publish</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Water Street · Series</div>
+        <div class="card-hed">27 Years. $33 Million. Still Vacant.</div>
+        <div class="card-stat">2027</div>
+        <div class="card-body">Reserve funds hit zero in 2027. Water Street bond payments run through 2031. The city's last 38 acres of developable land are pending an RFQ that may never produce market-rate revenue.</div>
+        <span class="card-status status-active">Series In Development</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Legislative · Ordinance 1465</div>
+        <div class="card-hed">Harm Reduction Written Into Zoning Code</div>
+        <div class="card-stat">7–0</div>
+        <div class="card-body">May 19, 2026. Unanimous. Ypsilanti's zoning ordinance now cites "empowering people who use drugs (PWUD)" as a stated purpose of municipal land use law.</div>
+        <span class="card-status status-active">Active Investigation</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Nonprofit · NP-2025-008</div>
+        <div class="card-hed">Youth Arts Alliance — The Subsidy Chain</div>
+        <div class="card-stat">5+</div>
+        <div class="card-body">Tiers of public funding: city land transfer, city blight declaration, county brownfield grants, state LEO grant, county CMH/parks. $457K in expenses. Groundbreaking: today.</div>
+        <span class="card-status status-active">Active Investigation</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">ICE · Federal Presence</div>
+        <div class="card-hed">FBI Confirmed Present. DOJ Source on Record.</div>
+        <div class="card-stat">June 10</div>
+        <div class="card-body">FBI confirmed present at Ypsilanti June 10, 2026. DOJ source confirmed. Bridge photo (IMG_3083) documents federal signage. City passed anti-enforcement resolution February 17.</div>
+        <span class="card-status status-published">Ready to Publish</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Peeler Standoff · January 2026</div>
+        <div class="card-hed">30 Hours. Tear Gas. Flash-Bangs. $1M Program.</div>
+        <div class="card-stat">8</div>
+        <div class="card-body">Eight felonies filed against Ruben Peeler, 53, arrested unharmed with a katana. Savit working to divert to psychiatric care. One day before Jenuwine was shot and killed.</div>
+        <span class="card-status status-pending">FOIA Pending</span>
+      </div>
+
+      <div class="acct-card reveal">
+        <div class="card-label">Election · China Trip 2017</div>
+        <div class="card-hed">The Trip the City Attorney Called Illegal</div>
+        <div class="card-stat">~$40K</div>
+        <div class="card-body">Developer Amy Foster paid through a Wayne State student group pass-through. Mayor Pro-Tem Nicole Brown was on the plane. The city attorney warned in writing it was "unethical and illegal."</div>
+        <span class="card-status status-pending">Story Pending Official Comment</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NETWORK -->
+<section id="network" class="network-section reveal">
+  <div class="page-wrap">
+    <div class="network-title">Documented Network · The Ecosystem</div>
+    <h2 class="network-hed">The Same Names Keep Appearing.<br>That's Not a Coincidence. That's a System.</h2>
+    <p class="network-body">Ypsilanti's accountability failures don't happen in isolation. They happen within a documented network of overlapping institutional affiliations — elected officials, nonprofit leaders, political operatives, and appointed commissioners whose relationships The Ypsilantian has traced through public records, campaign finance filings, council minutes, and IRS documents. The network map (interactive version coming) documents every confirmed connection.</p>
+    <div class="network-nodes">
+      <span class="node node-council">Nicole Brown · Mayor</span>
+      <span class="node node-council">Desiraé Simmons · Ward 3</span>
+      <span class="node node-council">Amber Fellows · Ward 3</span>
+      <span class="node node-council">Me'Chelle King · Ward 1</span>
+      <span class="node node-council">Patrick McLean · Ward 2</span>
+      <span class="node node-county">Annie Somerville · Commissioner</span>
+      <span class="node node-county">Justin Hodge · Commissioner</span>
+      <span class="node node-county">Eli Savit · Prosecutor</span>
+      <span class="node node-county">Yousef Rabhi · Commissioner / Mayoral Candidate</span>
+      <span class="node node-nonprofit">LEAF Harm Reduction · Corn Williams</span>
+      <span class="node node-nonprofit">Supreme Felons Inc. · $1.2M ARPA</span>
+      <span class="node node-nonprofit">Youth Arts Alliance · 326 E. Michigan</span>
+      <span class="node node-nonprofit">Care-Based Safety · Sunsetted Mar 2026</span>
+      <span class="node node-nonprofit">Nonprofit Enterprise at Work · Yodit Johnson</span>
+      <span class="node node-operator">Brian Geiringer · A2P2 / Fellows Campaign</span>
+      <span class="node node-operator">Bryan Foley · YDDA / CVI Committee</span>
+      <span class="node node-operator">Amanda Edmonds · Growing Hope / Brown endorser</span>
+      <span class="node node-event">Water Street · 27 yrs / $33M / encampment</span>
+      <span class="node node-event">McMullan · 4 felonies → $125</span>
+      <span class="node node-event">Ordinance 1465 · Harm Reduction Zoning</span>
+    </div>
+  </div>
+</section>
+
+<!-- TUESDAY COUNCIL -->
+<section id="tuesday" style="padding: 2rem 0;">
+  <div class="page-wrap">
+    <div class="rule-label"><span>Tuesday June 17 · City Council · 7PM</span></div>
+    <div class="tuesday">
+
+      <div class="tuesday-main reveal">
+        <div class="kicker">Council Preview</div>
+        <h2 class="hero-hed" style="font-size: 2rem;">The Encampment Resolution. Again.</h2>
+        <p style="font-size: 1rem; line-height: 1.6; margin: 0.75rem 0; color: #333;">Resolution 240 failed 3-3 in October 2024. Peeler happened in January 2026. King and Brown visited the encampment in May 2026. King called for removal on June 3: "It's our responsibility. It's our land." Reports of sexual assault, children in the woods, and fires at the encampment are documented.</p>
+        <p style="font-size: 1rem; line-height: 1.6; margin: 0.75rem 0; color: #333;">The question Tuesday June 16 is whether the vote math has changed. King (YES) and McLean (almost certainly YES) are two. Brown visited with King — hard to vote no. If Brown votes yes: three. Wilcoxen is the swing. Simmons will almost certainly vote no. Fellows likely follows Simmons ideologically.</p>
+        <p style="font-size: 0.85rem; line-height: 1.5; color: var(--muted); font-style: italic; border-left: 3px solid var(--accent); padding-left: 0.75rem; margin-top: 1rem;">The Ypsilantian will have a reporter in chambers Tuesday June 16. The Ypsilantian has documented the full context of every vote cast on this issue since October 2024 and every condition at the encampment since the February 2025 vacate notice.</p>
+      </div>
+
+      <div class="tuesday-sidebar reveal">
+        <div class="sidebar-label">Tuesday Agenda Items</div>
+
+        <div class="sidebar-item">
+          <strong>6:30 PM · Closed Session</strong>
+          TPOA collective bargaining — union contract negotiation per MCL 15.268(c)
+        </div>
+        <div class="sidebar-item">
+          <strong>Res. 2026-133</strong>
+          Harm Reduction Zoning (Ord. 1465) — second and final reading. Expected to pass.
+        </div>
+        <div class="sidebar-item">
+          <strong>Tabled · Budget Ord. 1464</strong>
+          FY2026-2027/2027-2028 budget — second reading. The 2027 reserve cliff.
+        </div>
+        <div class="sidebar-item">
+          <strong>734 Brewing · Social District</strong>
+          15 E Cross St liquor license expansion.
+        </div>
+        <div class="sidebar-item">
+          <strong>FOIA Appeal · VanDeCar</strong>
+          Kairos VanDeCar FOIA appeal — what were they requesting?
+        </div>
+        <div class="sidebar-item">
+          <strong>Library Plaza Arrest Discussion</strong>
+          KJ Pedri, LEAF staffer, arrested after interfering with YPD response to overdose/drug use incident. Policy gap: $1M unarmed program not yet operational.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ELECTION -->
+<section id="election2026" style="padding: 2rem 0; background: var(--pale);">
+  <div class="page-wrap">
+    <div class="rule-label"><span>August 4, 2026 Primary · November 3 General</span></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--col-gap);">
+
+      <div class="reveal">
+        <div class="kicker">Mayor · Democratic Primary</div>
+        <h2 class="hero-hed" style="font-size: 1.6rem;">Brown vs. Fellows: The Rematch Nobody Fully Understands Yet</h2>
+        <p style="font-size: 0.9rem; line-height: 1.55; margin: 0.75rem 0; color: #333;">In 2022, Brown won the mayoral race 76%. Fellows lost. Four years later, Fellows — now a sitting Ward 3 council member — filed to run against Brown on April 20, the day before the deadline. In 2017, Fellows stood at the public comment microphone and demanded staff be fired over a China trip Brown was on. They have voted together on $1 million spending packages. The 2026 mayoral race is the accountability story nobody else is covering.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div style="border: 1px solid var(--rule); padding: 0.75rem;">
+            <div style="font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Incumbent</div>
+            <div style="font-weight: 800; font-size: 1rem;">Nicole Brown</div>
+            <div style="font-size: 0.78rem; color: #555;">948 Jefferson St · Filed April 21</div>
+            <div style="font-size: 0.78rem; color: #555; margin-top: 0.3rem;">Endorsed by: Edmonds, Somerville, Hodge</div>
+          </div>
+          <div style="border: 1px solid var(--rule); padding: 0.75rem;">
+            <div style="font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Challenger</div>
+            <div style="font-weight: 800; font-size: 1rem;">Amber Fellows</div>
+            <div style="font-size: 0.78rem; color: #555;">320 Vinewood Ct · Filed April 20</div>
+            <div style="font-size: 0.78rem; color: #555; margin-top: 0.3rem;">Current Ward 3 CM · Term runs to 2028</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="kicker">Ward Races · All Three Wards on Ballot</div>
+        <h2 class="hero-hed" style="font-size: 1.6rem;">Three Incumbents. Three Primary Challengers. One Appointed Seat.</h2>
+        <div style="margin-top: 0.75rem;">
+          <div style="border-bottom: 1px solid var(--rule); padding: 0.6rem 0;">
+            <div style="font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Ward 1</div>
+            <div style="font-size: 0.9rem;"><strong>Me'Chelle King</strong> (inc.) vs. <strong>Bryan Foley</strong></div>
+            <div style="font-size: 0.78rem; color: #555;">Foley: 8 yrs city service, YDDA board, CVI Committee at Washtenaw Sheriff, calls Supreme Felons a mentorship model</div>
+          </div>
+          <div style="border-bottom: 1px solid var(--rule); padding: 0.6rem 0;">
+            <div style="font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Ward 2</div>
+            <div style="font-size: 0.9rem;"><strong>Patrick McLean</strong> (appointed) vs. <strong>Amy Rondel</strong></div>
+            <div style="font-size: 0.78rem; color: #555;">McLean was never elected — appointed by Simmons Jan 2024. Ohio area code. Running first electoral race. Rondel: zero public footprint.</div>
+          </div>
+          <div style="padding: 0.6rem 0;">
+            <div style="font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);">Ward 3</div>
+            <div style="font-size: 0.9rem;"><strong>Desiraé Simmons</strong> (inc.) vs. TBD</div>
+            <div style="font-size: 0.78rem; color: #555;">Ashanti Harris (independent, ran 2022) may file by July 16. Independent deadline pending. Call city clerk 734-483-1100.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOIA TRACKER -->
+<section id="foia" style="padding: 2rem 0;">
+  <div class="page-wrap">
+    <div class="rule-label"><span>Active FOIA Requests · 45+ Filed</span></div>
+    <div class="foia-grid reveal">
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-001</div>
+        <div class="foia-subject">McMullan credit card charges 2019-2023</div>
+        <div class="foia-target">City of Ypsilanti</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-008</div>
+        <div class="foia-subject">LEAF Harm Reduction — all city contracts</div>
+        <div class="foia-target">City of Ypsilanti</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-012</div>
+        <div class="foia-subject">YAA land transfer records</div>
+        <div class="foia-target">City of Ypsilanti</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-022</div>
+        <div class="foia-subject">YPD SA incident reports near encampments</div>
+        <div class="foia-target">Ypsilanti PD</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-025</div>
+        <div class="foia-subject">YPD call log Oct 1, 2024 City Hall arrest</div>
+        <div class="foia-target">Ypsilanti PD</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-030</div>
+        <div class="foia-subject">YMJ Associates Water Street contract + procurement</div>
+        <div class="foia-target">City of Ypsilanti</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-038</div>
+        <div class="foia-subject">Peeler 8 felony charges — current status</div>
+        <div class="foia-target">Washtenaw Prosecutor</div>
+      </div>
+      <div class="foia-item">
+        <div class="foia-num">FOIA-2025-042</div>
+        <div class="foia-subject">Ordinance 1465 full text — harm reduction zoning</div>
+        <div class="foia-target">City of Ypsilanti</div>
+      </div>
+    </div>
+    <p style="font-size: 0.78rem; color: var(--muted); margin-top: 0.75rem; font-family: var(--sans);">45 active requests across Ypsilanti City, Washtenaw County, WCSO, and Washtenaw Prosecutor's Office. Full FOIA log in the publication archive.</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about-section">
+  <div class="page-wrap">
+    <div class="about-inner reveal">
+      <div>
+        <h2 class="about-hed">Who We Are and Why We Exist</h2>
+        <div class="about-body">
+          <p>The Ypsilantian is an independent watchdog publication covering Ypsilanti and Washtenaw County, Michigan. We are named after M.T. Woodruff's original Ypsilantian, established in 1879.</p>
+          <p>We have no advertisers. We accept no paid placements. We are not affiliated with any political party, candidate, or organization. We follow documented public records, we file FOIAs, and we cover what the other outlets don't.</p>
+          <p>Our publisher is a longtime Ypsilanti south side resident. Our research director specializes in FOIA and public records. Our work is grounded in the documented record — council minutes, court filings, IRS documents, and first-person field coverage.</p>
+          <p>The publication you're reading is a preview. The full Ypsilantian launches Tuesday, June 17, 2026 — the night of the encampment vote.</p>
+        </div>
+      </div>
+      <div class="about-stats">
+        <div class="about-stat-item">
+          <div class="about-stat-num">50+</div>
+          <div class="about-stat-label">Research documents in archive</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="about-stat-num">45</div>
+          <div class="about-stat-label">Active FOIA requests filed</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="about-stat-num">4</div>
+          <div class="about-stat-label">Stories ready to publish</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="about-stat-num">$0</div>
+          <div class="about-stat-label">Advertising revenue accepted</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section id="tips" style="padding: 2rem 0;">
+  <div class="page-wrap">
+    <div class="rule-label"><span>Submit a Tip</span></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--col-gap);">
+      <div class="reveal">
+        <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem;">Know Something We Should Know?</h2>
+        <p style="font-size: 0.9rem; line-height: 1.6; color: #333; margin-bottom: 0.75rem;">Ypsilanti residents, business owners, city employees, and former officials: if you have documents, records, or firsthand knowledge of conduct that belongs on the public record, contact us.</p>
+        <p style="font-size: 0.9rem; line-height: 1.6; color: #333;">We protect sources. We verify before publishing. We give every subject named in a story the opportunity to respond.</p>
+      </div>
+      <div class="reveal" style="border-left: 1px solid var(--rule); padding-left: var(--col-gap);">
+        <div style="font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;">Contact</div>
+        <div style="font-size: 0.9rem; line-height: 2; color: #333;">
+          <div>📧 <strong>Tips:</strong> tips@theypsilantian.com</div>
+          <div>📧 <strong>Editorial:</strong> editor@theypsilantian.com</div>
+          <div>🔒 <strong>Secure:</strong> Signal available on request</div>
+          <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--muted);">For sensitive documents, request our secure drop information via email first.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-pub-name">The Ypsilantian</div>
+      <p class="footer-body">Independent watchdog journalism for Ypsilanti and Washtenaw County, Michigan. Named after M.T. Woodruff's original Ypsilantian, established 1879. No advertisers. No affiliations. No agenda except the documented record.</p>
+    </div>
+    <div>
+      <div class="footer-col-label">Coverage</div>
+      <ul class="footer-links">
+        <li><a href="#accountability">Accountability Threads</a></li>
+        <li><a href="#network">Network Map</a></li>
+        <li><a href="#tuesday">Council Coverage</a></li>
+        <li><a href="#election2026">2026 Elections</a></li>
+        <li><a href="#foia">FOIA Tracker</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-label">Publication</div>
+      <ul class="footer-links">
+        <li><a href="#about">About The Ypsilantian</a></li>
+        <li><a href="#tips">Submit a Tip</a></li>
+        <li><a href="#">Editorial Standards</a></li>
+        <li><a href="#">Source Protection Policy</a></li>
+        <li><a href="#">Archive</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 The Ypsilantian · Independent · Ypsilanti, Michigan · All factual claims based on documented public record · Named for M.T. Woodruff's original Ypsilantian, est. 1879
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.masthead-nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.background = a.getAttribute('href') === '#' + current ? 'var(--ink)' : '';
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--paper)' : '';
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
